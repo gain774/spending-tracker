@@ -1,0 +1,15 @@
+{
+  "name": "spending-tracker-source",
+  "private": true,
+  "version": "2.0.0",
+  "scripts": {
+    "build": "esbuild src/main.jsx --bundle --minify --format=iife --define:process.env.NODE_ENV='\"production\"' --loader:.jsx=jsx --loader:.css=text --outfile=../app.js"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.21.5"
+  }
+}
