@@ -98,6 +98,53 @@ input:focus, select:focus
 @media (prefers-reduced-motion: reduce){
   *, button { transition: none !important; animation: none !important; }
 }
+
+/* ===== PC / タブレット対応（768px以上で広く使う） ===== */
+@media (min-width: 768px){
+  .shell { max-width: 1200px !important; padding: 28px 32px 120px !important; }
+  .head { padding: 8px 0 20px; }
+  h1 { font-size: 22px !important; }
+
+  /* 2カラムグリッド：fullのパネルは横断、通常パネルは2列に並ぶ */
+  .grid { display: grid !important; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+  .grid > .full, .grid > .hscroll.full, .grid > .hero.full, .grid > .chips.full,
+  .grid > .scopeBar.full, .grid > .dashEditRow.full, .grid > .calNav.full,
+  .grid > .calLegend.full, .grid > .paidToggle.full, .grid > .panel.full
+  { grid-column: 1 / -1; }
+
+  /* ヒーローのサマリー2枚を横並びのまま大きく */
+  .dashStats { grid-template-columns: 1fr 1fr !important; gap: 16px !important; }
+  .dNum { font-size: 28px !important; }
+  .heroTotal { font-size: 32px !important; }
+
+  /* カレンダーのセルをゆったり */
+  .cell { min-height: 90px !important; padding: 8px !important; }
+  .cellDay { font-size: 13px !important; }
+  .cellChip { font-size: 11px !important; padding: 2px 6px !important; }
+
+  /* 下部ナビはPCでも中央に固定（横幅を確保） */
+  .bottomNav { max-width: 100%; }
+  .navInner { max-width: 720px !important; margin: 0 auto !important; }
+  .navBtn { font-size: 11px !important; padding: 10px 0 9px !important; }
+  .navBtn svg { width: 22px !important; height: 22px !important; }
+
+  /* モーダル(設定・編集シート)を広めに */
+  .modal, .sheet { max-width: 640px !important; }
+
+  /* 明細行をゆったり */
+  .item { padding: 12px 14px !important; }
+
+  /* ホバー時のカード強調（PCでのみ有効） */
+  .summcard:hover, .item:hover, .payRow:hover
+  { box-shadow: 0 4px 14px rgba(0,0,0,.08); }
+}
+
+/* 1200px以上では3カラムに拡張 */
+@media (min-width: 1200px){
+  .grid { grid-template-columns: 1fr 1fr 1fr !important; }
+  /* 2カラムで映えるパネル（stats等）だけは横2つ分 */
+  .grid > .hero { grid-column: 1 / -1; }
+}
 </style>
 </body>
 </html>
