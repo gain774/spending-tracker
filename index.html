@@ -20,5 +20,84 @@
 <body>
 <div id="root"></div>
 <script src="./app.js"></script>
+<style id="polish">
+/* ===== Brush-up overlay (safe: additive, !important to beat inline CSS) ===== */
+
+/* 数字を等幅＋タブラー、見出しの字間を軽くタイト */
+.num, .barVal, .dNum, .heroTotal, .scTotal, .cellDay, .cellChip, .itemAmt, .itemDate, .plPct, .catPct, .brRemain .num, .brLine .num
+{ font-variant-numeric: tabular-nums !important; font-feature-settings: 'tnum' 1, 'ss01' 1 !important; letter-spacing: -0.01em !important; }
+h1, h2, h3, .heroTotal, .dNum, .scTotal
+{ letter-spacing: -0.02em !important; }
+
+/* パネルの陰影を一段優しく。角丸を揃える */
+.panel, .hero, .ruleCard, .budgetSec, .dStat, .summcard
+{ box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 6px 20px rgba(0,0,0,.03) !important; border-radius: 14px !important; }
+@media (prefers-color-scheme: dark){
+  .panel, .hero, .ruleCard, .budgetSec, .dStat, .summcard
+  { box-shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.2) !important; }
+}
+
+/* タップ領域を最小44pxに（ガイドライン準拠） */
+.navBtn, .chip, .shiftBtn, .miniBtn, .miniToggle, .addBtn, .iconBtn, .editBtns button
+{ min-height: 40px !important; }
+
+/* フォーカスリング（キーボード操作時のみ） */
+button:focus-visible, input:focus-visible, select:focus-visible
+{ outline: 2px solid var(--ink) !important; outline-offset: 2px !important; border-radius: 10px; }
+
+/* ボタンの体感: ホバーで微かに浮く、押下で沈む */
+button { transition: transform .08s ease, background .15s, border-color .15s, color .15s, box-shadow .15s, opacity .15s !important; }
+@media (hover: hover){
+  .summcard:hover, .chip:hover, .miniBtn:hover, .addBtn:hover
+  { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+}
+button:not(:disabled):active { transform: scale(.97) !important; }
+
+/* 入力欄フォーカスの視認性 */
+input:focus, select:focus
+{ border-color: var(--ink) !important; box-shadow: 0 0 0 3px rgba(80,80,100,.12) !important; }
+
+/* スクロールバーを細く、浮き感を出す */
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-thumb { background: rgba(128,128,128,.35); border-radius: 999px; }
+*::-webkit-scrollbar-track { background: transparent; }
+.hscroll { scroll-snap-type: x proximity; padding-bottom: 2px; }
+.hscroll > * { scroll-snap-align: start; }
+
+/* 下部ナビをすりガラス風（iOS風） */
+.bottomNav
+{ backdrop-filter: saturate(140%) blur(14px) !important;
+  -webkit-backdrop-filter: saturate(140%) blur(14px) !important;
+  background: color-mix(in srgb, var(--panel) 82%, transparent) !important;
+  border-top: 1px solid color-mix(in srgb, var(--line) 70%, transparent) !important; }
+.navBtn.on::before
+{ content: ""; position: absolute; top: 3px; left: 50%; transform: translateX(-50%);
+  width: 22px; height: 3px; border-radius: 2px; background: var(--ink); }
+.navBtn { position: relative; }
+
+/* 明細カードのホバー */
+.item { border-radius: 10px !important; }
+@media (hover: hover){ .item:hover { background: var(--field); } }
+
+/* カレンダーの今日マーカーを強調 */
+.cell.today .cellDay
+{ background: var(--ink); color: var(--bg) !important; width: 22px; height: 22px; line-height: 22px; border-radius: 50%; margin-left: auto; text-align: center; font-weight: 700; display: inline-block; }
+
+/* ヒーローの数字を一段大きく（スマホ・デスクトップ） */
+.heroTotal, .dNum { font-weight: 800 !important; }
+
+/* トーストを少し柔らかく */
+.toast
+{ background: color-mix(in srgb, var(--ink) 92%, transparent) !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25) !important; }
+
+/* 空状態をやさしく */
+.empty { opacity: .7; font-size: 12.5px; padding: 10px 0; }
+
+/* 動作軽減設定時はトランジションを殺す */
+@media (prefers-reduced-motion: reduce){
+  *, button { transition: none !important; animation: none !important; }
+}
+</style>
 </body>
 </html>
