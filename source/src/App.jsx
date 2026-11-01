@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { RAW } from "./data.js";
 import { DonutChart, LineChart } from "./charts.jsx";
-import { gmailConnect, gmailProfile, gmailFetch } from "./gmail.js";
 import CSS from "./styles.css";
 
 /* ============================== 共通ユーティリティ ============================== */
@@ -133,7 +132,6 @@ export default function App() {
   const [mergeDup, setMergeDup] = useState(() => loadPref("mergeDup", false));
   const [defaultTab, setDefaultTab] = useState(() => loadPref("defaultTab", "use"));
   const [gasUrl, setGasUrl] = useState(() => loadPref("gasUrl", ""));
-  const [gClientId, setGClientId] = useState(() => loadPref("gClientId", ""));
   const [lastSync, setLastSync] = useState(() => loadPref("gasSyncAt", 0));
 
   /* ---------- 画面の状態 ---------- */
@@ -159,8 +157,6 @@ export default function App() {
   const toastRef = useRef();
   const [gasBusy, setGasBusy] = useState(false);
   const [gasMsg, setGasMsg] = useState({ ok: "", err: "" });
-  const [gBusy, setGBusy] = useState(false);
-  const [gMsg, setGMsg] = useState({ ok: "", err: "", email: "" });
 
   /* 状態を変えて保存するヘルパー */
   const persist = (setter, key) => (fn) => setter((p) => { const n = typeof fn === "function" ? fn(p) : fn; savePref(key, n); return n; });
@@ -349,19 +345,6 @@ export default function App() {
     setGasBusy(false);
   }
   useEffect(() => { if (gasUrl) gasSync(gasUrl); }, []);
-
-  async function gmailSync() {
-    if (!gClientId.trim()) { setGMsg({ ok: "", err: "先に Google Client ID を入力してください", email: "" }); return; }
-    setGBusy(true); setGMsg({ ok: "ログイン中…", err: "", email: "" });
-    try {
-      const token = await gmailConnect(gClientId.trim());
-      const email = await gmailProfile(token);
-      const rows = await gmailFetch(token, (n, t) => setGMsg({ ok: "解析中 " + n + "/" + t, err: "", email }));
-      if (!rows.length) setGMsg({ ok: "", err: "利用通知メールが見つかりませんでした", email });
-      else { setLiveTx(rows); savePref("liveTx", rows); setGMsg({ ok: "取得完了: " + rows.length + "件", err: "", email }); showToast("取得完了: " + rows.length + "件"); }
-    } catch (e) { setGMsg({ ok: "", err: "失敗: " + (e.message || e), email: "" }); }
-    setGBusy(false);
-  }
 
   const syncLabel = (ts) => { if (!ts) return ""; const m = Math.floor((Date.now() - ts) / 60000); if (m < 1) return "たった今更新"; if (m < 60) return m + "分前に更新"; const h = Math.floor(m / 60); return h < 24 ? h + "時間前に更新" : Math.floor(h / 24) + "日前に更新"; };
 
@@ -936,15 +919,6 @@ export default function App() {
               <button className="fullBtn" style={{ marginTop: 8 }} onClick={() => { savePref("gasUrl", gasUrl.trim()); gasSync(); }} disabled={gasBusy}>{gasBusy ? "取得中…" : "今すぐ取得"}</button>
               {gasMsg.err && <p className="setSub errText">{gasMsg.err}</p>}
               {gasMsg.ok && <p className="setSub okText">{gasMsg.ok}</p>}
-            </div>
-
-            <div className="setSection">
-              <div className="setLabel">Gmail 直接ログイン（任意）</div>
-              <input className="bankInput" placeholder="Google Client ID（…apps.googleusercontent.com）" value={gClientId} onChange={(e) => setGClientId(e.target.value)} onBlur={() => savePref("gClientId", gClientId.trim())} />
-              <button className="fullBtn" style={{ marginTop: 8 }} onClick={gmailSync} disabled={gBusy}>{gBusy ? gMsg.ok || "処理中…" : "Googleでログインして取得"}</button>
-              {gMsg.email && <p className="setSub">接続中: {gMsg.email}</p>}
-              {gMsg.err && <p className="setSub errText">{gMsg.err}</p>}
-              {!gBusy && gMsg.ok && <p className="setSub okText">{gMsg.ok}</p>}
             </div>
 
             <div className="setSection">
