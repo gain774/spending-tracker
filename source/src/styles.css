@@ -399,3 +399,33 @@ input:focus, select:focus { border-color:var(--ink) !important; }
 .billHeadBtns .miniBtn { flex:1; padding:9px 12px; }
 .groupActions { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; }
 .groupActions .miniBtn { padding:8px 4px; font-size:12px; white-space:nowrap; }
+
+/* ================= PCレイアウト（サイドメニュー） ================= */
+@media (min-width:760px){
+  .grid { align-items:start; }
+}
+@media (min-width:960px){
+  .bottomNav { top:0; bottom:0; left:0; right:auto; width:212px; border-top:none; border-right:1px solid var(--line); padding:96px 12px 24px; background:var(--panel); backdrop-filter:none; -webkit-backdrop-filter:none; }
+  .bottomNav::before { content:"支出トラッカー"; position:absolute; top:30px; left:24px; font-size:17px; font-weight:900; letter-spacing:-0.02em; color:var(--text); }
+  .navInner { flex-direction:column; gap:4px; max-width:none !important; margin:0 !important; }
+  .navBtn { flex:none; flex-direction:row; justify-content:flex-start; gap:12px; padding:11px 14px !important; border-radius:10px; font-size:14px !important; min-height:44px; }
+  .navBtn svg { width:20px !important; height:20px !important; }
+  .navBtn.on { background:var(--field); font-weight:700; }
+  .navBtn.on::before { top:50%; left:0; transform:translateY(-50%); width:3px; height:20px; }
+  @media (hover:hover){ .navBtn:not(.on):hover { background:var(--field); color:var(--text); } }
+  .shell { margin-left:212px; width:auto; max-width:1180px; padding:28px 36px 48px !important; }
+  .head h1 { font-size:24px; }
+  .toast { bottom:32px; left:calc(50% + 106px); }
+  .overlay { padding:32px; }
+  .sheetOverlay { align-items:center; }
+  .sheet { border-radius:18px; }
+}
+@media (min-width:1200px){ .grid { grid-template-columns:1fr 1fr; } }
+@media (min-width:1440px){ .grid { grid-template-columns:1fr 1fr 1fr; } .shell { max-width:1400px; } }
+@media (min-width:960px){
+  .head h1 { display:none; }
+  .head .tag { font-size:13px; margin-top:10px; }
+  .billHead { flex-direction:row; align-items:center; }
+  .billHeadBtns .miniBtn { flex:none; }
+  .toggleRow .miniBtn { flex:none; padding:8px 16px; }
+}
